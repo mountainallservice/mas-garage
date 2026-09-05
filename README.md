@@ -1,6 +1,10 @@
 # Mountain Car Garage — Reykjanesbær, Iceland
 
-**Live:** [garage.masgroup.is](https://garage.masgroup.is) · **Status:** production · **Built & operated by** [Kamil Jan](https://kamiljan.com)
+[![Quality Gate](https://github.com/kamiljan11/mas-garage/actions/workflows/quality.yml/badge.svg)](https://github.com/kamiljan11/mas-garage/actions/workflows/quality.yml)
+
+**Live:** [garage.mountaincar.is](https://garage.mountaincar.is) · **Status:** production · **Built & operated by** [Kamil Jan](https://kamiljan.com)
+
+**Stack:** HTML5 + inline CSS/vanilla JS (no framework, no bundler) · TypeScript 7 (tooling only) · html-validate 11 · Playwright 1.62 · Node 22 in CI. See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full map and [`docs/adr/0001-static-html-no-build-step.md`](docs/adr/0001-static-html-no-build-step.md) for why there's no framework.
 
 Landing page and installable web app for Mountain Car Garage — *fast, honest car help in
 Reykjanesbær*. Trilingual (English / Polish / Icelandic), because the customers are split

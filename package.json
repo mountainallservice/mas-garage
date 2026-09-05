@@ -2,7 +2,7 @@
   "name": "mas-garage",
   "version": "1.0.0",
   "private": true,
-  "description": "Mountain Car Garage — static landing page and PWA shell for garage.masgroup.is",
+  "description": "Mountain Car Garage — static landing page and PWA shell for garage.mountaincar.is",
   "scripts": {
     "start": "serve --listen 4173 --no-clipboard .",
     "lint": "html-validate index.html",
