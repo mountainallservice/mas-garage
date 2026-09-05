@@ -6,6 +6,18 @@
 // `if: hashFiles('package.json'/'playwright.config.ts') != ''`.
 import { test, expect } from '@playwright/test';
 
+// Typ globali wystawionych przez inline <script> w index.html — realny typ zamiast
+// `as any`, zeby przeglad kodu (i tsc) faktycznie sprawdzaly ksztalt atrapy ponizej.
+declare global {
+  interface Window {
+    deferredInstallPrompt?: {
+      prompt: () => void;
+      userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+    };
+    installApp?: () => void;
+  }
+}
+
 /** Bledy JS i konsoli zbierane od pierwszej nawigacji. */
 function collectErrors(page: import('@playwright/test').Page) {
   const errors: string[] = [];
@@ -93,11 +105,11 @@ test('przycisk instalacji chowa sie takze po odrzuceniu promptu (regresja)', asy
   const hiddenAfterDismiss = await page.evaluate(async () => {
     const btn = document.getElementById('installBtn') as HTMLButtonElement;
     btn.hidden = false;
-    (window as any).deferredInstallPrompt = {
+    window.deferredInstallPrompt = {
       prompt: () => {},
       userChoice: Promise.resolve({ outcome: 'dismissed' }),
     };
-    (window as any).installApp();
+    window.installApp?.();
     await new Promise((r) => setTimeout(r, 50));
     return btn.hidden;
   });
