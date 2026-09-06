@@ -5,3 +5,4 @@ blob-report/
 .playwright/
 *.log
 .DS_Store
+*.tsbuildinfo

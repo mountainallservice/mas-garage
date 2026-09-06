@@ -1,36 +1,39 @@
 # RUNBOOK — operacje i awarie
 
-<!-- Uzupelnij pola [..] przy wdrozeniu projektu. Ten plik czyta czlowiek o 3 w nocy — zero prozy, same komendy. -->
-
 ## Podstawy
-- Produkcja: [URL]
-- Hosting: [gdzie stoi + link do panelu]
-- Repo: github.com/mountainallservice/[repo]
-- Sekrety: Infisical "MAS Group" (localhost:8222) — NIE w repo
+- Produkcja: https://garage.mountaincar.is
+- Hosting: **[NIEPEWNE]** — brak `vercel.json`/`netlify.toml`/`CNAME`/workflow deployu w repo;
+  zweryfikuj aktywny panel hostingu przed pierwszym incydentem i dopisz tutaj.
+- Repo: github.com/kamiljan11/mas-garage
+- Sekrety: brak — statyczna strona, zero env, zero backendu.
 
 ## Deploy
-- Standard: merge do main -> [auto-deploy przez ... / komenda]
-- Reczny: `npm run build` -> [gdzie wrzucic dist]
+- Standard: merge do `main` → redeploy przez panel hostingu (mechanizm auto-deploy nie jest
+  zakodowany w repo — zweryfikuj w dashboardzie, patrz sekcja "Podstawy").
+- Ręczny: skopiuj zawartość repo (bez `node_modules`, `e2e/`, `docs/`) na hosting statyczny.
+  Brak kroku `build` — to, co w repo, to dokładnie to, co ląduje na serwerze.
 
 ## Rollback (cel: <5 min)
 ```bash
-git revert <sha-zlego-commita> && git push   # -> redeploy automatyczny
-# albo: przywroc poprzedni release/tag w panelu hostingu
+git revert <sha-zlego-commita> && git push   # -> redeploy automatyczny (jesli hosting go ma)
+# albo: przywroc poprzedni deploy w panelu hostingu
 ```
 
 ## Monitoring
-- Bledy runtime: Sentry [link do projektu] — alerty ida na mountainallservice@gmail.com
-- Healthcheck: [URL/status] — sprawdz najpierw to
-- CI: zakladka Actions w repo (Quality Gate musi byc zielony)
+- Bledy runtime: brak backendu -> brak Sentry; jedyne bledy to JS w konsoli przegladarki
+  (lapane przez `e2e/smoke.spec.ts` w CI, nie w produkcji na zywo).
+- Healthcheck: `curl -I https://garage.mountaincar.is` — 200 = strona wstaje.
+- CI: zakladka Actions w repo (Quality Gate + E2E smoke musza byc zielone).
 
 ## Typowe awarie
 | Objaw | Pierwszy krok |
 |---|---|
-| Strona nie wstaje po deploy | rollback (wyzej), potem debug na branchu |
-| Blad 500 na akcji X | Sentry -> stack trace -> `systematic-debugging` |
-| Wygasly sekret/API key | Infisical -> zrotuj -> redeploy |
-| Domena/DNS | panel ISNIC / rejestratora |
+| Strona nie wstaje po deploy | rollback (wyzej), potem debug na branchu; sprawdz panel hostingu |
+| Przycisk instalacji PWA nie dziala | sprawdz `beforeinstallprompt` w konsoli — czesc przegladarek (iOS Safari) nigdy go nie emituje, to nie jest bug |
+| Stara tresc wraca po zmianie | podbij `CACHE` w `sw.js` (stale-while-revalidate trzyma poprzednia wersje do czasu odswiezenia) |
+| Link WhatsApp nie otwiera czatu | sprawdz numer `3548888005` w `index.html` (wa.me) i czy nie zmienil sie format |
+| Domena/DNS | panel ISNIC / rejestratora domeny mountaincar.is |
 
 ## Kontakty
-- Wlasciciel: MAS Group, mountainallservice@gmail.com
-- Klient: [imie, kontakt, SLA jesli jest]
+- Wlasciciel: MAS Group / Kamil Jan, mountainallservice@gmail.com
+- Klient: Mountain Car Garage (Gosia), kontakt operacyjny przez WhatsApp +354 888 8005

@@ -17,8 +17,7 @@
 10. Nie commituj z `--no-verify`. Czerwone CI to nie sugestia, to sciana.
 
 ## Kontekst projektu
-<!-- UZUPELNIJ per repo: stack, komendy, pliki wzorcowe -->
-- Stack:
-- Komendy: `npm run dev` / `npm run build` / `npm run lint` / `npm test`
-- Plik wzorcowy komponentu:
-- Plik wzorcowy API/serwisu:
+- Stack: czysty `index.html` (HTML5 + inline CSS/vanilla JS), bez frameworka i bez bundlera; TypeScript tylko w `playwright.config.ts` + `e2e/`. Zero backendu, zero bazy danych.
+- Komendy: `npm start` (serwuje `.` na :4173) / `npm run lint` (`html-validate index.html`) / `npm run test:e2e` (Playwright, lokalnie 1 worker — patrz komentarz w `playwright.config.ts`) / `npx tsc --noEmit` (typy w `e2e/`). Brak `build` — nic do zbudowania.
+- Plik wzorcowy komponentu: nie dotyczy — cala strona to jeden `index.html`; nowa sekcja = nowy blok w tym samym pliku, trzymaj konwencje sasiednich sekcji (id `-en`/`-pl`/`-is` na kazdym tlumaczalnym wezle).
+- Plik wzorcowy API/serwisu: nie dotyczy — `sw.js` to caly "serwis" (service worker: network-first dla nawigacji, stale-while-revalidate dla assetow).
